@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jogo da Memória</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrapper">
+    <section id="intro" class="screen">
+      <h1>JOGO DA MEMÓRIA</h1>
+      <p>Encontre todos os pares! Clique em JOGAR para começar.</p>
+      <button id="playBtn" class="btn">JOGAR</button>
+      <div id="play-expand" class="expand-bar" aria-hidden="true"></div>
+    </section>
+
+    <section id="game" class="screen hidden">
+      <div class="topbar">
+        <button id="restart" class="btn small">REINICIAR</button>
+        <div class="stats">
+          <span id="moves">Movimentos: 0</span>
+          <span id="matches">Pares: 0</span>
+        </div>
+      </div>
+      <div id="board" class="board" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">Projeto: Jogo da Memória</footer>
+  </main>
+  <script src="script.js"></script>
+
+<div id="victory-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Parabéns!</h2>
+    <p id="final-time"></p>
+    <h3>Ranking</h3>
+    <ol id="ranking-list"></ol>
+    <button id="play-again">Jogar novamente</button>
+  </div>
+</div>
+
+</body>
+</html>
