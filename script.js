@@ -8,6 +8,23 @@ const movesSpan = document.getElementById('moves');
 const matchesSpan = document.getElementById('matches');
 const restartBtn = document.getElementById('restart');
 
+// A grande lista de todos os emojis disponíveis para seleção aleatória
+const ALL_EMOJIS = [
+    '🍇','🍈','🍉','🍊','🍋','🍋‍🟩','🍌','🍍','🥭','🍎','🍏','🍐','🍑','🍒','🍓','🫐',
+    '🥝','🍅','❤️','🩷','🧡','💛','💚','💙','🩵','💜','🤎','🖤','🩶','🐶','🦊','🐺',
+    '🐱','🦁','🐯','🐴','🦄','🐹','🐭','🐰','🐷','🐼','🐻','🐸','🐦‍⬛','🦚','🦋','🐜',
+    '🏵️','🌸','⚽','🏀','🏈','🌍','☀️','🔥','🪐','☂️','🌈','💧','✂️','😀','😂','😘',
+    '😍','👍','🫶','👀','🧠'
+];
+
+function selectRandomElements(array, count) {
+    // Cria uma cópia da array e embaralha superficialmente (usando o método .sort com Math.random)
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    
+    // Retorna apenas os primeiros 'count' elementos (os 12 emojis que serão usados)
+    return shuffled.slice(0, count);
+}
+
 let cols = 6;
 const rows = 4;
 const totalCards = cols * rows; // 24
@@ -21,10 +38,12 @@ let moves = 0;
 let matches = 0;
 
 function generateSymbols(){
-  const base = ['🐶','🐱','🐭','🦊','🐻','🐼','🦁','🐸','🐷','🐵','🐯','🐰'];
-  symbols = base.slice(0, pairCount);
-  symbols = symbols.concat(symbols);
-  shuffle(symbols);
+    // 1. SELEÇÃO: Escolhe 12 emojis únicos aleatoriamente da ALL_EMOJIS
+    const uniqueSymbols = selectRandomElements(ALL_EMOJIS, pairCount);
+    // 2. DUPLICAÇÃO: Cria os pares (total de 24 cartas)
+    symbols = uniqueSymbols.concat(uniqueSymbols); 
+    // 3. EMBARALHAMENTO: Aplica o embaralhamento final
+    shuffle(symbols);
 }
 
 function shuffle(array){
