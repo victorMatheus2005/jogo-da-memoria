@@ -93,13 +93,11 @@ p{margin:0 0 18px;color:#555}
 
 /* Estilo para a imagem de introdução */
 .intro-logo {
-    width: 100%; /* Ocupa 100% do container */
-    max-width: 450px; /* Limita o tamanho máximo */
+    width: 100%;
     height: auto;
-    display: block; /* Garante que 'margin: auto' funcione para centralizar */
-    margin: 0 auto 20px auto; /* Centraliza horizontalmente e adiciona margem inferior */
-    max-width: 250px; /* Limita o tamanho máximo */
-
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 400px; /* Novo limite desejado */
 }
 
 /* Ajusta um pouco a margem do título H1 para ficar mais perto do logo */
