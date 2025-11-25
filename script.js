@@ -7,6 +7,7 @@ const expandBar = document.getElementById('play-expand');
 const movesSpan = document.getElementById('moves');
 const matchesSpan = document.getElementById('matches');
 const restartBtn = document.getElementById('restart');
+const timerSpan = document.getElementById('timer');
 
 // A grande lista de todos os emojis disponíveis para seleção aleatória
 const ALL_EMOJIS = [
@@ -108,7 +109,7 @@ function resetTurn(){
   lockBoard = false;
 
   if(matches === pairCount){
-    setTimeout(() => alert('🎉 Parabéns! Você encontrou todos os pares em ' + moves + ' movimentos!'), 300);
+    showVictory();
   }
 }
 
@@ -118,6 +119,7 @@ function startGame(){
   matchesSpan.textContent = 'Pares: 0';
   generateSymbols();
   buildBoard();
+  startTimer();
   expandBar.classList.add('grow');
   setTimeout(() => {
     intro.classList.add('hidden');
@@ -137,22 +139,43 @@ restartBtn.addEventListener('click', () => {
 // Timer + Ranking + Modal
 let startTime = null;
 let timerInterval = null;
+const totalSeconds = 0;
 const modal = document.getElementById('victory-modal');
 const finalTimeElem = document.getElementById('final-time');
 const rankingList = document.getElementById('ranking-list');
 const playAgainBtn = document.getElementById('play-again');
 
+function formatTime(totalSeconds) {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+}
+
 function startTimer() {
-  if (startTime) return;
+  if (timerInterval) return; // Evita iniciar se já estiver rodando
   startTime = Date.now();
-  timerInterval = setInterval(()=>{},1000);
+  
+  // O setInterval agora atualiza o display
+  timerInterval = setInterval(() => {
+    const currentTime = Math.floor((Date.now() - startTime) / 1000);
+    timerSpan.textContent = 'Tempo: ' + formatTime(currentTime);
+  }, 1000); // Atualiza a cada segundo
 }
 
 function stopTimer() {
-  if (!startTime) return 0;
-  const time = (Date.now() - startTime)/1000;
+  if (!startTime) return { totalSeconds: 0, formattedTime: '00:00' };
+  
+  const totalSecs = Math.round((Date.now() - startTime) / 1000); // Segundos totais
   clearInterval(timerInterval);
-  return Math.round(time);
+  timerInterval = null; // Limpa o intervalo
+  startTime = null; // Reseta o tempo de início
+  
+  return { 
+    totalSeconds: totalSecs, 
+    formattedTime: formatTime(totalSecs) 
+  };
 }
 
 function saveRanking(time) {
@@ -165,14 +188,17 @@ function saveRanking(time) {
 }
 
 function showVictory() {
-  const time = stopTimer();
-  finalTimeElem.textContent = `Seu tempo: ${time}s`;
-  const ranks = saveRanking(time);
+  const { totalSeconds, formattedTime } = stopTimer(); // Pega o tempo formatado e segundos totais
+  
+  // Formata a mensagem de vitória (Y minutos e Z segundos)
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  
+  // A mensagem no modal será ajustada via JavaScript. A mensagem original do alert é removida.
+  finalTimeElem.innerHTML = `Parabéns! Você conseguiu achar os ${matches} pares em ${moves} movimentos em **${minutes} minutos e ${seconds} segundos**!`;
+  
+  // O ranking continua salvando o tempo em segundos totais (para manter o ranking como está).
+  const ranks = saveRanking(totalSeconds);
   rankingList.innerHTML = ranks.map(t=>`<li>${t}s</li>`).join("");
   modal.classList.remove('hidden');
 }
-
-playAgainBtn.addEventListener('click', ()=>{
-  modal.classList.add('hidden');
-  window.location.reload();
-});
