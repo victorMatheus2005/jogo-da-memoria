@@ -178,6 +178,15 @@ function stopTimer() {
   };
 }
 
+function reiniciar() {
+    if (intervalo) { 
+        clearInterval(intervalo);
+    }
+
+    tempo = 0;
+    iniciarCronometro();
+}
+
 function saveRanking(time) {
   let ranks = JSON.parse(localStorage.getItem('memory_ranking')||"[]");
   ranks.push(time);
