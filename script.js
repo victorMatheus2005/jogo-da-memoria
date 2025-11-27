@@ -109,6 +109,10 @@ function resetTurn(){
   lockBoard = false;
 
   if(matches === pairCount){
+    // Remove o alert existente:
+    // setTimeout(() => alert('🎉 Parabéns! Você encontrou todos os pares em ' + moves + ' movimentos!'), 300);
+    
+    // NOVO: Chama showVictory() que irá parar o timer e mostrar o modal.
     showVictory();
   }
 }
@@ -119,7 +123,7 @@ function startGame(){
   matchesSpan.textContent = 'Pares: 0';
   generateSymbols();
   buildBoard();
-  startTimer();
+  startTimer(); // INICIA O CRONÔMETRO
   expandBar.classList.add('grow');
   setTimeout(() => {
     intro.classList.add('hidden');
@@ -133,6 +137,7 @@ restartBtn.addEventListener('click', () => {
   expandBar.classList.remove('grow');
   game.classList.add('hidden');
   intro.classList.remove('hidden');
+  stopTimer();
   setTimeout(() => expandBar.style.width = '0', 10);
 });
 
@@ -183,7 +188,7 @@ function reiniciar() {
         clearInterval(intervalo);
     }
 
-    tempo = 0;
+    tempo = 0
     iniciarCronometro();
 }
 
